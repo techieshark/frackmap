@@ -31,7 +31,10 @@ body {
 }
 
 .bar {
-  fill: steelblue;
+  $bar-color: steelblue;
+  fill: $bar-color;
+//   stroke: darken($bar-color, 10%);
+//   stroke-width: 1px;
 }
 
 .bar:hover {
