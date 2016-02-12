@@ -73,11 +73,11 @@
                 .attr('height', 0)
                 .transition()
                 .duration(300)
-                .delay(function (d,i) {
+                .delay(function (d, i) {
                     return i * 150;
                 })
                 .attr('y', function(d) { return y(d.frequency); })
-                .attr('height', function(d) { return height - y(d.frequency); })
+                .attr('height', function(d) { return height - y(d.frequency); });
 
         bar.append('text')
                 .text(function(d) { return d.frequency; })
