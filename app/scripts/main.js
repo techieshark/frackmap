@@ -68,9 +68,16 @@
 
         var bar = svg.selectAll('.bar');
         bar.append('rect')
+                .attr('width', x3.rangeBand())
+                .attr('y', height)
+                .attr('height', 0)
+                .transition()
+                .duration(300)
+                .delay(function (d,i) {
+                    return i * 150;
+                })
                 .attr('y', function(d) { return y(d.frequency); })
                 .attr('height', function(d) { return height - y(d.frequency); })
-                .attr('width', x3.rangeBand());
 
         bar.append('text')
                 .text(function(d) { return d.frequency; })
