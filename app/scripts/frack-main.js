@@ -50,25 +50,33 @@
             // .attr("dy", "0em")
             .style("text-anchor", "end")
             .text("Frequency");
-
-        svg.append('rect')
-            .data(data)
-            .enter().append('rect')
-                .attr('x', function(d) { x3(getYear(d)) })
-                .attr('width', x3.rangeBand());
-
+        
         svg.selectAll(".bar")
             .data(data)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function(d) { 
-                    return x3(getYear(d)); 
-                 })
-                .attr("width", x3.rangeBand())
-            .attr("y", function(d) { 
-                return y(d.frequency); })
-            .attr("height", function(d) { 
-                return height - y(d.frequency); });
+            .enter().append("g")
+            .attr("transform", function(d) { return "translate(" + x3(getYear(d)) + ",0)"; })
+            .attr("class", "bar");
+        
+        var bar = svg.selectAll(".bar");
+        bar.append("rect")
+                .attr("y", function(d) { return y(d.frequency); })
+                .attr("height", function(d) { return height - y(d.frequency); })
+                .attr("width", x3.rangeBand());
+
+        bar.append("text")
+                .text(function(d) { return d.frequency; })
+                .attr("x", function(d) {
+                    // center text on bar
+                    var textWidth = this.getBBox().width;
+                    return x3.rangeBand() / 2 - (textWidth / 2);  
+                })  
+                .attr("y", function(d) { 
+                    // put text a bit above bars. (if put below bar, text may not fit on short bars)
+                    var textHeight = this.getBBox().height;
+                    return y(d.frequency) - (textHeight); 
+                    })
+                .attr("dy", ".75em");
+                  
     });
 
     function type(d) {

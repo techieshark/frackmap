@@ -41,6 +41,14 @@ body {
   fill: brown;
 }
 
+.bar text {
+    font-size: 8px;
+    opacity: 0;
+}
+
+.bar:hover text {
+    opacity: 1;
+}
 .axis {
   font: 10px sans-serif;
 }
