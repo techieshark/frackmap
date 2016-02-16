@@ -169,7 +169,7 @@ gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
 
 
 var ghPages = require('gulp-gh-pages');
-gulp.task('deploy', function() {
+gulp.task('deploy', ['build'], function() {
   return gulp.src('./dist/**/*')
     .pipe(ghPages());
 });
