@@ -17,7 +17,7 @@
 
     map.on('style.load', function () {
 
-        var source = '/data/Fracking_Calendar.geojson';
+        var source = './data/Fracking_Calendar.geojson';
         d3.json(source, function(err, data) {
 
             if (err) {
