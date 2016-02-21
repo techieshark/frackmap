@@ -1,8 +1,10 @@
-;(function () {
-        
+(function () {
+
     'use strict';
 
-    var mapboxgl = window.mapboxgl;
+    var mapboxgl = window.mapboxgl,
+        d3 = window.d3,
+        addChart = window.addChart;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiY2lrcTUxZmJvMTkweHRubTZlOGt5MnZzeiJ9.CxxVSVIPSsgFFL3Dx-QTbA';
 
@@ -15,11 +17,17 @@
 
     map.on('style.load', function () {
 
-        d3.json('/data/Fracking_Calendar.geojson', function(err, data) {
+        var source = '/data/Fracking_Calendar.geojson';
+        d3.json(source, function(err, data) {
+
+            if (err) {
+                console.error('Error acquiring map data source ' + source + ': ' + err);
+                return;
+            }
 
             // Create a year property used to filter against.
             data.features = data.features.map(function(d) {
-                d.properties.year = new Date(d.properties["Full Date"]).getFullYear();
+                d.properties.year = new Date(d.properties['Full Date']).getFullYear();
                 return d;
             });
 
@@ -35,7 +43,7 @@
                 'paint': {
                     'circle-radius': 5,
                     'circle-color': 'rgba(55,148,179,0.8)'
-                },
+                }
             });
 
             map.setFilter('points', ['<', 'year', 2000]);

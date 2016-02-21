@@ -1,6 +1,4 @@
-var addChart;
-
-;(function () {
+(function () {
 
     'use strict';
 
@@ -84,7 +82,7 @@ var addChart;
             .remove();
     };
 
-    addChart = function (barEmptiedCallback) {
+    window.addChart = function (barEmptiedCallback) {
 
         d3.tsv('data/frack-data.tsv', type, function(error, data) {
             if (error) { throw error; }
@@ -141,11 +139,11 @@ var addChart;
                     .each('end', function (d) {
                         var thisBar = d3.select(this.parentNode);
                         bulgeBar(thisBar, x3.rangeBand(), getBarHeight(d), getTopY(d));
-                        thisBar.transition().delay(400).attr('class', 'bar emptied').each('end', function(d) {
+                        thisBar.transition().delay(400).attr('class', 'bar emptied').each('end', function(barData) {
                         // thisBar.transition().delay(2000).attr('class', 'bar emptied').each('end', function(d) {
-                            barEmptiedCallback(d);
+                            barEmptiedCallback(barData);
 
-                        })
+                        });
                     });
 
             bar.append('text')
