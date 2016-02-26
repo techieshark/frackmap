@@ -83,7 +83,7 @@
             .remove();
     };
 
-    window.addChart = function (barEmptiedCallback) {
+    window.addChart = function (barEmptiedCallback, barMouseDownCallback, barMouseUpCallback) {
 
         d3.tsv('data/frack-data.tsv', type, function(error, data) {
             if (error) { throw error; }
@@ -119,7 +119,11 @@
                 .data(data)
                 .enter().append('g')
                 .attr('transform', function(d) { return 'translate(' + x3(getYear(d)) + ',0)'; })
-                .attr('class', 'bar');
+                .attr('class', 'bar')
+                .on('mouseover', barMouseDownCallback)
+                .on('mousedown', barMouseDownCallback)
+                .on('mouseup', barMouseUpCallback);
+
 
             var bar = svg.selectAll('.bar');
             var getBarHeight = function (d) { return height - y(d.frequency); };

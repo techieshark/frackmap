@@ -43,15 +43,50 @@
                 'source': 'locations',
                 'paint': {
                     'circle-radius': 5,
-                    'circle-color': 'rgba(55,148,179,0.8)'
+                    // 'circle-color': 'rgba(55,148,179,0.8)'
+                    // 'circle-color': 'hsla(0, 0%, 0%, 1)'
+                    // 'circle-color': 'yellow'
+                    'circle-color': 'DarkSlateGray'
                 }
             });
 
+            map.addLayer({
+                'id': 'featuredBorder',
+                'type': 'circle',
+                'source': 'locations',
+                'paint': {
+                    'circle-radius': 7,
+                    'circle-color': 'Gold'
+                }
+            });
+            map.addLayer({
+                'id': 'featured',
+                'type': 'circle',
+                'source': 'locations',
+                'paint': {
+                    'circle-radius': 5,
+                    'circle-color': 'black'
+                    // 'circle-color': 'hsla(0, 0%, 50%, 1)'
+                }
+            });
+
+
             map.setFilter('points', ['<', 'year', 2000]);
+            map.setFilter('featured', ['==', 'year', 0]); // initally, feature none
+            map.setFilter('featuredBorder', ['==', 'year', 0]); // initally, feature none
 
             addChart(function barEmptiedCallback(d) {
                 console.log('emptied bar for year ' + d.year);
                 map.setFilter('points', ['<=', 'year', d.year]);
+                map.setFilter('featured', ['==', 'year', d.year]);
+                map.setFilter('featuredBorder', ['==', 'year', d.year]);
+            }, function barMouseDownCallback(d) {
+                map.setFilter('featured', ['==', 'year', d.year]);
+                map.setFilter('featuredBorder', ['==', 'year', d.year]);
+            }, function barMouseUpCallback() {
+                // remove highlights
+                map.setFilter('featured', ['==', 'year', 0]);
+                map.setFilter('featuredBorder', ['==', 'year', 0]);
             });
 
         });

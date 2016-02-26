@@ -68,18 +68,22 @@ svg.chart {
     background: transparent;
 }
 
-$bar-color: steelblue;
+// $bar-color: steelblue;
+// $bar-color: yellow;
+$bar-color: black;
+$focus-color: yellow;
 
 .bar {
   fill: $bar-color;
 }
 
 .bar:hover {
-  fill: brown;
+  stroke: $focus-color;
 }
 
 .bar .bulge {
     fill: $bar-color;
+    stroke: $focus-color;
 }
 .bar.emptied .bulge {
     fill-opacity: 1;
@@ -89,12 +93,17 @@ $bar-color: steelblue;
     stroke: lighten($bar-color, 20%);
     stroke-width: 1px;
 }
+.bar.emptied:hover rect {
+    stroke: $focus-color;
+    fill-opacity: 1;
+}
 .bar.emptied text {
     fill: $bar-color;
     font-weight: bold;
 }
 
 .bar text {
+    stroke: none;
     font-size: 8px;
     opacity: 0;
 }
