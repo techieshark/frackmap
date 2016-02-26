@@ -11,9 +11,10 @@
     var map = new mapboxgl.Map({
         container: 'map', // container id
         style: 'mapbox://styles/techieshark/cikw6xfu100d098kmu3ogo74t', // light copy
-        center: [-94.50, 40], //usa
+        center: [-94.50, 35], //usa
         zoom: 3 // usa
     });
+    window.mapboxMap = map;
 
     map.on('style.load', function () {
 

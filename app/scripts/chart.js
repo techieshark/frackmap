@@ -6,7 +6,7 @@
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
         width = 760 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
+        height = 250 - margin.top - margin.bottom;
 
     var y = d3.scale.linear()
         .range([height, 0]);
@@ -17,6 +17,7 @@
         .orient('left');
 
     var svg = d3.select('body').append('svg')
+        .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
     .append('g')
