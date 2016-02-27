@@ -4,24 +4,53 @@
 
     var d3 = window.d3;
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 760 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+    // options:
+    // container: d3 selector to add the svg.chart to, e.g 'body'
+    // width (chart width)
+    // height (chart height)
+    var Chart = function (options) {
+        // initialize based on options or defaults
+        this.container = options.container || 'body';
+        this.totalWidth = options.width || 760;
+        this.totalHeight = options.height || 250;
+        this.barEmptiedCallback = options.barEmptiedCallback || function() {};
+        this.barMouseDownCallback = options.barMouseDownCallback || function () {};
+        this.barMouseUpCallback = options.barMouseUpCallback || function () {};
 
-    var y = d3.scale.linear()
-        .range([height, 0]);
+        // calculate margins and inner width
+        var margin = {top: 20, right: 20, bottom: 30, left: 40};
+        this.margin = margin;
+        this.width = this.totalWidth - margin.left - margin.right,
+        this.height = this.totalHeight - margin.top - margin.bottom;
 
+        // initialize d3 scales, etc
+        this.y = d3.scale.linear()
+            .range([this.height, 0]);
 
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient('left');
+        this.yAxis = d3.svg.axis()
+            .scale(this.y)
+            .orient('left');
 
-    var svg = d3.select('body').append('svg')
-        .attr('class', 'chart')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-    .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        // add to page
+        this.render();
+
+    };
+    window.Chart = Chart;
+
+    // Add the chart to the page
+    Chart.prototype.render = function () {
+
+        this.svg = d3.select(this.container)
+            .append('svg')
+                .attr('class', 'chart')
+                .attr('width', this.totalWidth)
+                .attr('height', this.totalHeight)
+            .append('g')
+                .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+
+        this.buildChart();
+    };
+
 
     var getYear = function (d) { return '' + d.year; };
 
@@ -83,16 +112,28 @@
             .remove();
     };
 
-    window.addChart = function (barEmptiedCallback, barMouseDownCallback, barMouseUpCallback) {
+    // the heavy lifting of building the chart
+    Chart.prototype.buildChart = function () {
+
+        var svg = this.svg;
+        var y = this.y;
+        var yAxis = this.yAxis;
+        var height = this.height;
+        var barMouseDownCallback = this.barMouseDownCallback;
+        var barMouseUpCallback = this.barMouseUpCallback;
+        var barEmptiedCallback = this.barEmptiedCallback;
+        var thisChart = this;
 
         d3.tsv('data/frack-data.tsv', type, function(error, data) {
             if (error) { throw error; }
+
+            thisChart.data = data;
 
             var barOuterPad = .2;
             var barPad = .1;
             var x3 = d3.scale.ordinal()
                 .domain(data.map(getYear))
-                .rangeRoundBands([0, width], barPad, barOuterPad);
+                .rangeRoundBands([0, thisChart.width], barPad, barOuterPad);
 
             var xAxis = d3.svg.axis()
                 .scale(x3)

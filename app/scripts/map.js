@@ -4,7 +4,8 @@
 
     var mapboxgl = window.mapboxgl,
         d3 = window.d3,
-        addChart = window.addChart;
+        _ = window._,
+        Chart = window.Chart;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGVjaGllc2hhcmsiLCJhIjoiY2lrcTUxZmJvMTkweHRubTZlOGt5MnZzeiJ9.CxxVSVIPSsgFFL3Dx-QTbA';
 
@@ -75,18 +76,33 @@
             map.setFilter('featured', ['==', 'year', 0]); // initally, feature none
             map.setFilter('featuredBorder', ['==', 'year', 0]); // initally, feature none
 
-            addChart(function barEmptiedCallback(d) {
+
+            var barEmptiedCallback = function (d) {
                 console.log('emptied bar for year ' + d.year);
+
+                // show cumulative features up to current year
                 map.setFilter('points', ['<=', 'year', d.year]);
+
+                // highlight this year's features
                 map.setFilter('featured', ['==', 'year', d.year]);
                 map.setFilter('featuredBorder', ['==', 'year', d.year]);
-            }, function barMouseDownCallback(d) {
+            };
+
+            var barMouseDownCallback = function (d) {
                 map.setFilter('featured', ['==', 'year', d.year]);
                 map.setFilter('featuredBorder', ['==', 'year', d.year]);
-            }, function barMouseUpCallback() {
+            };
+
+            var barMouseUpCallback = function () {
                 // remove highlights
                 map.setFilter('featured', ['==', 'year', 0]);
                 map.setFilter('featuredBorder', ['==', 'year', 0]);
+            };
+
+            new Chart({
+                barEmptiedCallback: barEmptiedCallback,
+                barMouseDownCallback: barMouseDownCallback,
+                barMouseUpCallback: barMouseUpCallback
             });
 
         });
