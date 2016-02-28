@@ -77,6 +77,7 @@
             map.setFilter('featured', ['==', 'year', 0]); // initally, feature none
             map.setFilter('featuredBorder', ['==', 'year', 0]); // initally, feature none
 
+            var chart;
 
             var barEmptiedCallback = function (d) {
                 console.log('emptied bar for year ' + d.year);
@@ -103,12 +104,12 @@
                 var startXY = { x: chart.getBarCenterX(d), y: chart.getBarTopY(d) };
 
                 // draw points at the top of the bar
-                var points = chart.svg.selectAll("circle.y-" + d.year)
+                var points = chart.svg.selectAll('circle.y-' + d.year)
                     .data(xyPairs)
                     .enter()
-                    .append("circle");
+                    .append('circle');
 
-                // transition betwwen point at top of bar and feature location
+                // transition between point at top of bar and feature location
                 var transitions = 0;
                 points
                     .attr('class', 'y-' + d.year)
@@ -116,8 +117,8 @@
                     .attr('cy', startXY.y)
                     .attr('r', 5)
                   .transition().duration(1000).ease('ease-out')
-                    .attr('cx', function (d) { return d.x; })
-                    .attr('cy', function (d) { return d.y; })
+                    .attr('cx', function (xy) { return xy.x; })
+                    .attr('cy', function (xy) { return xy.y; })
                   .each( 'start', function() {
                         transitions++;
                   }).each( 'end', function() {
@@ -134,11 +135,6 @@
                             points.remove();
                         }
                   });
-
-
-
-
-
             };
 
             var barMouseDownCallback = function (d) {
@@ -152,7 +148,7 @@
                 map.setFilter('featuredBorder', ['==', 'year', 0]);
             };
 
-            var chart = new Chart({
+            chart = new Chart({
                 barEmptiedCallback: barEmptiedCallback,
                 barMouseDownCallback: barMouseDownCallback,
                 barMouseUpCallback: barMouseUpCallback

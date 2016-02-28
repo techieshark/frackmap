@@ -20,7 +20,7 @@
         // calculate margins and inner width
         var margin = {top: 20, right: 20, bottom: 30, left: 40};
         this.margin = margin;
-        this.width = this.totalWidth - margin.left - margin.right,
+        this.width = this.totalWidth - margin.left - margin.right;
         this.height = this.totalHeight - margin.top - margin.bottom;
 
         // initialize d3 scales, etc
