@@ -39,13 +39,12 @@
 
     // Add the chart to the page
     Chart.prototype.render = function () {
-
-        this.svg = d3.select(this.container)
-            .append('svg')
-                .attr('class', 'chart')
-                .attr('width', this.totalWidth)
-                .attr('height', this.totalHeight)
-            .append('g')
+        this.svgContainer = d3.select(this.container)
+                .append('svg')
+                    .attr('class', 'chart')
+                    .attr('width', this.totalWidth)
+                    .attr('height', this.totalHeight);
+        this.svg = this.svgContainer.append('g')
                 .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
         this.buildChart();
@@ -131,7 +130,7 @@
 
             var barOuterPad = .2;
             var barPad = .1;
-            var x3 = d3.scale.ordinal()
+            var x3 = thisChart.x3 = d3.scale.ordinal()
                 .domain(data.map(getYear))
                 .rangeRoundBands([0, thisChart.width], barPad, barOuterPad);
 
@@ -207,6 +206,13 @@
                     .attr('dy', '.75em');
 
         });
+    };
+
+    Chart.prototype.getBarTopY = function (d) {
+        return this.y(d.frequency);
+    };
+    Chart.prototype.getBarCenterX = function (d) {
+        return this.x3(d.year) + this.x3.rangeBand() / 2;
     };
 
 }());

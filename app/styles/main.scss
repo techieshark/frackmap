@@ -66,12 +66,18 @@ svg.chart {
     position: absolute;
     bottom: 0;
     background: transparent;
+    overflow: visible; // keep dots visible when they fly out of chart area
 }
 
 // $bar-color: steelblue;
 // $bar-color: yellow;
 $bar-color: black;
 $focus-color: yellow;
+
+.chart circle {
+     fill: DarkSlateGray;
+     stroke: $focus-color;
+}
 
 .bar {
   fill: $bar-color;
