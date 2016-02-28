@@ -58,7 +58,7 @@
                 'source': 'locations',
                 'paint': {
                     'circle-radius': 7,
-                    'circle-color': 'Gold'
+                    'circle-color': 'red'
                 }
             });
             map.addLayer({

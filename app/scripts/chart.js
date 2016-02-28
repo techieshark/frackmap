@@ -90,12 +90,12 @@
 
         // a short bar at the top of the screen,
         // so the bars are sent flying toward the map
-        var shortSvgBar = `
-                M 0,0 ${barWidth},0
-                C ${barWidth},0 ${barWidth},1 ${barWidth},1
-                l -${barWidth},0
-                C 0,1 0,0 0,0
-                Z`;
+        // var shortSvgBar = `
+        //         M 0,0 ${barWidth},0
+        //         C ${barWidth},0 ${barWidth},1 ${barWidth},1
+        //         l -${barWidth},0
+        //         C 0,1 0,0 0,0
+        //         Z`;
 
         return bar.append('path')
             .attr('class', 'bulge')
@@ -105,9 +105,9 @@
             .transition().duration(bulgeDuration)
             .ease('elastic')
             .attr('d', svgRect)
-            .transition().ease('cubic-out').duration(1000) // lou
-            .attr('d', shortSvgBar)
-            .style('fill-opacity', 0.5)
+            // .transition().ease('cubic-out').duration(1000) // lou
+            // .attr('d', shortSvgBar)
+            // .style('fill-opacity', 0.5)
             .remove();
     };
 
