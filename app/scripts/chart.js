@@ -13,6 +13,7 @@
         this.container = options.container || 'body';
         this.totalWidth = options.width || 760;
         this.totalHeight = options.height || 250;
+        this.barBulgeEndCallback = options.barBulgeEndCallback || function () {};
         this.barEmptiedCallback = options.barEmptiedCallback || function() {};
         this.barMouseDownCallback = options.barMouseDownCallback || function () {};
         this.barMouseUpCallback = options.barMouseUpCallback || function () {};
@@ -62,9 +63,15 @@
 
     // bar: the group to append to
     // y: y value for top of rectangle
-    var bulgeBar = function (bar, barWidth, barHeight, yTop) {
+    Chart.prototype.bulgeBar = function (bar, d) { //barWidth, barHeight, yTop) {
 
         var bulgeDuration = 250; // milliseconds
+
+        var thisChart = this;
+
+        var barWidth = this.x3.rangeBand();
+        var barHeight = this.getBarHeight(d);
+        var yTop = this.getBarTopY(d);
 
         var svgRect = `
                 M 0,${yTop} ${barWidth},${yTop}
@@ -101,7 +108,9 @@
             .attr('class', 'bulge')
             .attr('d', svgRect)
             .transition().delay(0).duration(bulgeDuration)
-            .attr('d', bulgedSvgRect)
+            .attr('d', bulgedSvgRect).each('end', function () {
+                thisChart.barBulgeEndCallback(d);
+            })
             .transition().duration(bulgeDuration)
             .ease('elastic')
             .attr('d', svgRect)
@@ -183,7 +192,7 @@
                     .attr('height', getBarHeight)
                     .each('end', function (d) {
                         var thisBar = d3.select(this.parentNode);
-                        bulgeBar(thisBar, x3.rangeBand(), getBarHeight(d), getTopY(d));
+                        thisChart.bulgeBar(thisBar, d);
                         thisBar.transition().delay(400).attr('class', 'bar emptied').each('end', function(barData) {
                         // thisBar.transition().delay(2000).attr('class', 'bar emptied').each('end', function(d) {
                             barEmptiedCallback(barData);
@@ -213,6 +222,9 @@
     };
     Chart.prototype.getBarCenterX = function (d) {
         return this.x3(d.year) + this.x3.rangeBand() / 2;
+    };
+    Chart.prototype.getBarHeight = function (d) {
+        return this.height - this.y(d.frequency);
     };
 
 }());

@@ -79,7 +79,7 @@
 
             var chart;
 
-            var barEmptiedCallback = function (d) {
+            var animateFeaturePoints = function (d) {
                 console.log('emptied bar for year ' + d.year);
 
                 // show cumulative features up to current year
@@ -137,21 +137,21 @@
                   });
             };
 
-            var barMouseDownCallback = function (d) {
+            var highlightThisYearsFeatures = function (d) {
                 map.setFilter('featured', ['==', 'year', d.year]);
                 map.setFilter('featuredBorder', ['==', 'year', d.year]);
             };
 
-            var barMouseUpCallback = function () {
+            var hideFeatureHighlights = function () {
                 // remove highlights
                 map.setFilter('featured', ['==', 'year', 0]);
                 map.setFilter('featuredBorder', ['==', 'year', 0]);
             };
 
             chart = new Chart({
-                barEmptiedCallback: barEmptiedCallback,
-                barMouseDownCallback: barMouseDownCallback,
-                barMouseUpCallback: barMouseUpCallback
+                barBulgeEndCallback: animateFeaturePoints,
+                barMouseDownCallback: highlightThisYearsFeatures,
+                barMouseUpCallback: hideFeatureHighlights
             });
 
         });
