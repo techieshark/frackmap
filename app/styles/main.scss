@@ -92,6 +92,7 @@ svg.chart {
     bottom: 0;
     background: transparent;
     overflow: visible; // keep dots visible when they fly out of chart area
+    pointer-events: none; // pass mouse events through to map beneath
 }
 
 // $bar-color: steelblue;
@@ -106,6 +107,7 @@ $focus-color: yellow;
 
 .bar {
   fill: $bar-color;
+  pointer-events: all; // grab mouse events (reverses `none` property from .chart parent)
 }
 
 .bar:hover {
