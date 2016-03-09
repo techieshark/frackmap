@@ -63,7 +63,22 @@ body {
     border-bottom: 1px solid #e4e4e4;
 }
 
+.mapboxgl-popup {
+    max-width: 400px;
+}
 
+.map-popup-title {
+    font-weight: bold;
+}
+
+.incident-location {
+    font-style: italic;
+}
+
+.incident-date, .incident-location, .incident-source {
+    display: inline-block;
+    margin-right: 1em;
+}
 
 /* chart styles */
 /* --------------------------------------------------------- */

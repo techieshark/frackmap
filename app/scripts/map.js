@@ -2,6 +2,29 @@
 
     'use strict';
 
+    // utility function to clean up URLs shown in map pop-up
+    // based on http://stackoverflow.com/a/23945027/1024811
+    function extractDomain(url) {
+        var domain;
+        //find & remove protocol (http, ftp, etc.) and get domain
+        if (url.indexOf('://') > -1) {
+            domain = url.split('/')[2];
+        }
+        else {
+            domain = url.split('/')[0];
+        }
+
+        //find & remove port number
+        domain = domain.split(':')[0];
+
+        // also remove 'www.' -@techieshark
+        if (domain.indexOf('www.') > -1) {
+            domain = domain.split('www.')[1];
+        }
+
+        return domain;
+    }
+
     var mapboxgl = window.mapboxgl,
         d3 = window.d3,
         _ = window._,
@@ -41,6 +64,7 @@
 
             map.addLayer({
                 'id': 'points',
+                'interactive': true,
                 'type': 'circle',
                 'source': 'locations',
                 'paint': {
@@ -159,6 +183,63 @@
                 barMouseUpCallback: hideFeatureHighlights
             });
 
+        });
+    });
+
+    // pop-up stuff, based on https://www.mapbox.com/mapbox-gl-js/example/popup-on-click/
+    var popup = new mapboxgl.Popup();
+
+    // When a click event occurs near a marker icon, open a popup at the location of
+    // the feature, with description HTML from its properties.
+    map.on('click', function (e) {
+        console.log('click event');
+        console.log(e);
+        map.featuresAt(e.point, {
+            radius: 7, // Half the marker size (14px).
+            includeGeometry: true,
+            layer: 'points'
+        }, function (err, features) {
+
+            if (err || !features.length) {
+                if (err) {
+                    console.log('error: ' + err);
+                }
+                popup.remove();
+                return;
+            }
+
+            var feature = features[0];
+
+            var when = new Date(feature.properties['Full Date']);
+            var year = when.getFullYear();
+            var day = when.getDate();
+            var month = feature.properties.Month;
+            var whenString = day + ' ' + month + ', ' + year;
+
+
+            var src = feature.properties['Source 1'];
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(feature.geometry.coordinates)
+                .setHTML('<div class="map-popup-title">' + feature.properties['Incident Type'] + '</div>' +
+                         '<p>' + feature.properties['Incident Description'] + '</p>' +
+                         '<div class="incident-date">' + whenString + '</div>' +
+                         '<div class="incident-location">' + feature.properties.Location + ', ' + feature.properties.State + '</div>' +
+                         '<div class="incident-source"><a href="' + src + '">' + extractDomain(src) + '</a></div>'
+                         )
+                .addTo(map);
+        });
+    });
+
+    // Use the same approach as above to indicate that the symbols are clickable
+    // by changing the cursor style to 'pointer'.
+    map.on('mousemove', function (e) {
+        map.featuresAt(e.point, {
+            radius: 7, // Half the marker size (14px).
+            layer: 'points'
+        }, function (err, features) {
+            map.getCanvas().style.cursor = (!err && features.length) ? 'pointer' : '';
         });
     });
 
