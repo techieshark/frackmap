@@ -109,6 +109,9 @@
                     .enter()
                     .append('circle');
 
+                // var transitionDelay = 100; // ms
+                var transitionDuration = 1000; // ms
+
                 // transition between point at top of bar and feature location
                 var transitions = 0;
                 points
@@ -116,7 +119,9 @@
                     .attr('cx', startXY.x)
                     .attr('cy', startXY.y)
                     .attr('r', 5)
-                  .transition().duration(1000).ease('ease-out')
+                  .transition()
+                    // .delay(function (x, i) { return i * transitionDelay; })
+                    .duration(transitionDuration).ease('ease-out')
                     .attr('cx', function (xy) { return xy.x; })
                     .attr('cy', function (xy) { return xy.y; })
                   .each( 'start', function() {
