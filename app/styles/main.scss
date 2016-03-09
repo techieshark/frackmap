@@ -75,6 +75,10 @@ body {
     font-style: italic;
 }
 
+.incident-source a {
+    color: inherit; // don't need blue; it's underlined so it stands out anyway.
+}
+
 .incident-date, .incident-location, .incident-source {
     display: inline-block;
     margin-right: 1em;
