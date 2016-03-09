@@ -54,6 +54,26 @@ body {
     margin-top: 8px;
 }
 
+.stats {
+    position: absolute;
+    bottom: 5em;
+    left: 4em;
+    z-index: 1;
+    font-family: "Century Schoolbook", serif;
+    text-align: center;
+}
+
+.stats .count {
+    font-size: 5em;
+    display: none; // hide until ready to animate
+}
+
+.stats .description {
+    display: block;
+    margin-top: -1em;
+}
+
+
 /* map styles */
 /* --------------------------------------------------------- */
 

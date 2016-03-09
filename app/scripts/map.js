@@ -106,6 +106,12 @@
             var animateFeaturePoints = function (d) {
                 console.log('emptied bar for year ' + d.year);
 
+                var countSpan = $('.stats .count');
+                countSpan.show();
+                var countSoFar = parseInt(countSpan[0].innerText);
+                countSoFar += d.frequency;
+                countSpan[0].innerText = countSoFar;
+
                 // show cumulative features up to current year
                 map.setFilter('points', ['<', 'year', d.year]);
 
